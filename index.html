@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam DLC配置生成器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            background-color: #16213e;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 3px solid #00adb5;
+        }
+        
+        h1 {
+            color: #00adb5;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            color: #8a8a8a;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .description {
+            color: #b0b0b0;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .card {
+            background-color: #1a1a2e;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #00adb5;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card h2 {
+            color: #00adb5;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 i {
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        input {
+            flex: 1;
+            padding: 15px;
+            background-color: #0f3460;
+            border: 2px solid #1a508b;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00adb5;
+            box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.2);
+        }
+        
+        button {
+            background: linear-gradient(to right, #00adb5, #00858f);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            background: linear-gradient(to right, #00858f, #006a72);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(0, 173, 181, 0.3);
+        }
+        
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .secondary-btn {
+            background: linear-gradient(to right, #393e46, #222831);
+        }
+        
+        .secondary-btn:hover {
+            background: linear-gradient(to right, #222831, #1a1a2e);
+        }
+        
+        .success-btn {
+            background: linear-gradient(to right, #00b894, #00a085);
+        }
+        
+        .success-btn:hover {
+            background: linear-gradient(to right, #00a085, #008b74);
+        }
+        
+        .progress-container {
+            background-color: #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #1a1a2e;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00adb5, #00b894);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .output {
+            background-color: #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .output h3 {
+            color: #00adb5;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .config-content {
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+            border: 1px solid #2d4059;
+        }
+        
+        .dlc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .dlc-item {
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #00adb5;
+        }
+        
+        .dlc-id {
+            color: #00adb5;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .dlc-name {
+            color: #e0e0e0;
+            margin-top: 5px;
+            word-break: break-word;
+        }
+        
+        .error {
+            background-color: #2d132c;
+            border-left: 5px solid #c72c41;
+            color: #ee4540;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .success {
+            background-color: #1e3c2a;
+            border-left: 5px solid #00b894;
+            color: #55efc4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .warning {
+            background-color: #3c2d1e;
+            border-left: 5px solid #f39c12;
+            color: #f1c40f;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .instructions {
+            background-color: #0f3460;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .instructions h3 {
+            color: #00adb5;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #8a8a8a;
+            padding: 20px;
+            font-size: 0.9rem;
+            border-top: 1px solid #2d4059;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .dlc-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-gamepad"></i> Steam DLC配置生成器</h1>
+            <p class="subtitle">在线生成cream_api.ini配置文件，解锁Steam游戏DLC内容</p>
+            <p class="description">
+                此工具通过Steam API获取游戏DLC信息，并生成对应的cream_api.ini配置文件。
+                适用于学习和研究目的，请支持正版游戏。
+            </p>
+        </header>
+        
+        <div class="content">
+            <div class="warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>免责声明：</strong>本工具仅供学习和研究使用。请尊重游戏开发者的劳动成果，支持正版游戏。使用者需自行承担使用风险。
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-search"></i> 获取游戏信息</h2>
+                <p>请输入Steam游戏的App ID（商店链接中的数字），例如：292030（巫师3）</p>
+                
+                <div class="input-group">
+                    <input type="number" id="appId" placeholder="请输入Steam App ID" min="1" value="292030">
+                    <button id="fetchBtn">
+                        <i class="fas fa-download"></i> 获取DLC信息
+                    </button>
+                </div>
+                
+                <div class="buttons">
+                    <button id="testBtn" class="secondary-btn">
+                        <i class="fas fa-wifi"></i> 测试网络连接
+                    </button>
+                    <button id="clearBtn" class="secondary-btn">
+                        <i class="fas fa-trash"></i> 清空结果
+                    </button>
+                </div>
+            </div>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-text">
+                    <span id="progressStep">准备中...</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="error" id="errorContainer">
+                <i class="fas fa-times-circle"></i>
+                <span id="errorMessage">错误信息将显示在这里</span>
+            </div>
+            
+            <div class="success" id="successContainer">
+                <i class="fas fa-check-circle"></i>
+                <span id="successMessage">成功信息将显示在这里</span>
+            </div>
+            
+            <div class="output" id="outputContainer">
+                <h3><i class="fas fa-list-alt"></i> 游戏信息</h3>
+                <div id="gameInfo">游戏信息将显示在这里</div>
+                
+                <h3><i class="fas fa-download"></i> 配置文件预览</h3>
+                <div class="config-content" id="configPreview">
+                    配置文件内容将显示在这里
+                </div>
+                
+                <div class="buttons">
+                    <button id="downloadBtn" class="success-btn">
+                        <i class="fas fa-file-download"></i> 下载配置文件
+                    </button>
+                    <button id="copyBtn" class="secondary-btn">
+                        <i class="fas fa-copy"></i> 复制配置内容
+                    </button>
+                </div>
+                
+                <div id="dlcContainer">
+                    <!-- DLC列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> 使用说明</h3>
+                <ol>
+                    <li>输入Steam游戏的App ID（可在商店页面URL中找到，如https://store.steampowered.com/app/<strong>292030</strong>/）</li>
+                    <li>点击"获取DLC信息"按钮，等待工具获取游戏信息和DLC列表</li>
+                    <li>生成配置文件后，点击"下载配置文件"按钮保存cream_api.ini文件</li>
+                    <li>将下载的cream_api.ini文件放置到游戏根目录（与原版steam_api.dll同一目录）</li>
+                    <li>将原版steam_api.dll重命名为steam_api_o.dll（64位游戏则为steam_api64.dll重命名为steam_api64_o.dll）</li>
+                    <li>运行游戏，DLC内容应该已经解锁</li>
+                </ol>
+                <p><strong>注意：</strong>某些游戏可能有额外的反作弊措施，此方法可能不适用。请尊重游戏开发者的劳动成果，支持正版游戏。</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Steam DLC配置生成器 | 仅供学习和研究使用 | 工具作者: 小路大王大王大王 | 3DM: tangdgd</p>
+            <p>每个游戏的ID获取就是商店链接中的数字</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM元素
+            const appIdInput = document.getElementById('appId');
+            const fetchBtn = document.getElementById('fetchBtn');
+            const testBtn = document.getElementById('testBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressStep = document.getElementById('progressStep');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressFill = document.getElementById('progressFill');
+            const errorContainer = document.getElementById('errorContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            const successContainer = document.getElementById('successContainer');
+            const successMessage = document.getElementById('successMessage');
+            const outputContainer = document.getElementById('outputContainer');
+            const gameInfo = document.getElementById('gameInfo');
+            const configPreview = document.getElementById('configPreview');
+            const dlcContainer = document.getElementById('dlcContainer');
+            
+            // 全局变量
+            let currentAppId = 0;
+            let gameData = null;
+            let dlcList = [];
+            let configContent = '';
+            
+            // 更新进度条
+            function updateProgress(step, percent, description) {
+                progressStep.textContent = description || step;
+                progressPercent.textContent = `${percent}%`;
+                progressFill.style.width = `${percent}%`;
+                
+                if (percent > 0) {
+                    progressContainer.style.display = 'block';
+                }
+                
+                // 完成时隐藏进度条
+                if (percent >= 100) {
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                    }, 1000);
+                }
+            }
+            
+            // 显示错误信息
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorContainer.style.display = 'block';
+                successContainer.style.display = 'none';
+                
+                // 5秒后自动隐藏错误信息
+                setTimeout(() => {
+                    errorContainer.style.display = 'none';
+                }, 5000);
+            }
+            
+            // 显示成功信息
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successContainer.style.display = 'block';
+                errorContainer.style.display = 'none';
+                
+                // 5秒后自动隐藏成功信息
+                setTimeout(() => {
+                    successContainer.style.display = 'none';
+                }, 5000);
+            }
+            
+            // 隐藏所有消息
+            function hideMessages() {
+                errorContainer.style.display = 'none';
+                successContainer.style.display = 'none';
+            }
+            
+            // 清空结果
+            function clearResults() {
+                outputContainer.style.display = 'none';
+                gameData = null;
+                dlcList = [];
+                configContent = '';
+                gameInfo.innerHTML = '游戏信息将显示在这里';
+                configPreview.textContent = '配置文件内容将显示在这里';
+                dlcContainer.innerHTML = '';
+                hideMessages();
+                progressContainer.style.display = 'none';
+            }
+            
+            // 使用CORS代理请求数据（避免跨域问题）
+            async function makeRequest(url, maxRetries = 3) {
+                // 使用CORS代理绕过跨域限制
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const targetUrl = encodeURIComponent(url);
+                
+                for (let attempt = 0; attempt < maxRetries; attempt++) {
+                    try {
+                        const response = await fetch(`${proxyUrl}${targetUrl}`, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        
+                        return await response.json();
+                    } catch (error) {
+                        if (attempt < maxRetries - 1) {
+                            const waitTime = Math.pow(2, attempt) * 1000;
+                            console.log(`请求失败，${waitTime/1000}秒后重试 (${attempt+1}/${maxRetries})...`);
+                            await new Promise(resolve => setTimeout(resolve, waitTime));
+                        } else {
+                            throw error;
+                        }
+                    }
+                }
+            }
+            
+            // 测试网络连接
+            async function testConnection() {
+                try {
+                    updateProgress('测试连接', 10, '正在测试网络连接...');
+                    fetchBtn.disabled = true;
+                    testBtn.disabled = true;
+                    
+                    // 测试连接（使用一个已知的Steam API端点）
+                    await makeRequest('https://store.steampowered.com/api/appdetails?appids=292030&cc=us&l=english');
+                    
+                    updateProgress('测试连接', 100, '网络连接正常');
+                    showSuccess('✓ 网络连接正常，可以继续使用');
+                    
+                } catch (error) {
+                    showError(`网络连接测试失败: ${error.message}`);
+                    console.error('连接测试错误:', error);
+                } finally {
+                    fetchBtn.disabled = false;
+                    testBtn.disabled = false;
+                    setTimeout(() => {
+                        updateProgress('', 0, '');
+                    }, 1500);
+                }
+            }
+            
+            // 获取游戏信息和DLC列表
+            async function fetchGameInfo(appId) {
+                try {
+                    currentAppId = appId;
+                    
+                    // 第一步：获取基础游戏信息
+                    updateProgress('获取游戏信息', 20, `正在获取游戏 (AppID: ${appId}) 的信息...`);
+                    
+                    const gameUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&cc=us&l=english`;
+                    const gameData = await makeRequest(gameUrl);
+                    
+                    const appData = gameData[appId.toString()];
+                    
+                    if (!appData || !appData.success) {
+                        throw new Error(`未找到ID为 ${appId} 的游戏或API返回失败`);
+                    }
+                    
+                    const gameName = appData.data.name || `Steam_Game_${appId}`;
+                    const dlcIds = appData.data.dlc || [];
+                    
+                    updateProgress('获取游戏信息', 50, `成功找到游戏: ${gameName}`);
+                    
+                    if (dlcIds.length === 0) {
+                        updateProgress('完成', 100, `此游戏没有找到任何DLC`);
+                        return {
+                            gameName,
+                            dlcList: [],
+                            originalName: gameName
+                        };
+                    }
+                    
+                    // 第二步：获取DLC详细信息
+                    updateProgress('获取DLC信息', 60, `发现 ${dlcIds.length} 个DLC，正在获取详细信息...`);
+                    
+                    const dlcList = [];
+                    let processedCount = 0;
+                    
+                    // 批量处理DLC，避免同时发起太多请求
+                    const batchSize = 5;
+                    for (let i = 0; i < dlcIds.length; i += batchSize) {
+                        const batch = dlcIds.slice(i, i + batchSize);
+                        const batchPromises = batch.map(async (dlcId, index) => {
+                            try {
+                                const dlcUrl = `https://store.steampowered.com/api/appdetails?appids=${dlcId}&cc=us&l=english`;
+                                const dlcData = await makeRequest(dlcUrl, 2);
+                                
+                                const dlcInfo = dlcData[dlcId.toString()];
+                                
+                                if (dlcInfo && dlcInfo.success) {
+                                    dlcList.push({
+                                        id: dlcId,
+                                        name: dlcInfo.data.name || `DLC_${dlcId}`
+                                    });
+                                } else {
+                                    dlcList.push({
+                                        id: dlcId,
+                                        name: `DLC_${dlcId}`
+                                    });
+                                }
+                            } catch (error) {
+                                // 如果请求失败，仍然添加DLC条目但使用默认名称
+                                dlcList.push({
+                                    id: dlcId,
+                                    name: `DLC_${dlcId}`
+                                });
+                            }
+                            
+                            processedCount++;
+                            const percent = 60 + Math.floor((processedCount / dlcIds.length) * 30);
+                            updateProgress('获取DLC信息', percent, `已处理 ${processedCount}/${dlcIds.length} 个DLC...`);
+                        });
+                        
+                        // 等待当前批次完成
+                        await Promise.all(batchPromises);
+                        
+                        // 批次之间短暂延迟，避免请求过快
+                        if (i + batchSize < dlcIds.length) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                    }
+                    
+                    updateProgress('完成', 100, `成功获取 ${dlcList.length} 个DLC信息`);
+                    
+                    return {
+                        gameName,
+                        dlcList,
+                        originalName: gameName
+                    };
+                    
+                } catch (error) {
+                    console.error('获取游戏信息时出错:', error);
+                    throw error;
+                }
+            }
+            
+            // 生成配置文件内容
+            function generateConfig(appId, dlcList, gameName) {
+                // 获取当前时间，格式：2026/1/2 00:18:48
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth() + 1;
+                const day = now.getDate();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                const generatedTime = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+                
+                let config = `; cream_api.ini 配置文件
+
+
+[steam]
+; Application ID (http://store.steampowered.com/app/%appid%/)
+appid = ${appId}
+; Current game language.
+; Uncomment this option to turn it on.
+; Default is "english".
+;language = schinese
+; Enable/disable automatic DLC unlock. Default option is set to "false".
+; Keep in mind that this option  WON'T work properly if the "[dlc]" section is NOT empty
+unlockall = false
+; Original Valve's steam_api.dll.
+; Default is "steam_api_o.dll".
+orgapi = steam_api_o.dll
+; Original Valve's steam_api64.dll.
+; Default is "steam_api64_o.dll".
+orgapi64 = steam_api64_o.dll
+; Enable/disable extra protection bypasser.
+; Default is "false".
+extraprotection = false
+; Add the specific files to hide from detection.
+; Use comma (,) to separate the files. "cream_api.ini" is hidden by default.
+;filestohide = steam_appid.txt,steam_emu.ini
+; The game will think that you're offline (supported by some games).
+; Default is "false".
+forceoffline = false
+; Some games are checking for the low violence presence.
+; Default is "false".
+;lowviolence = true
+; Purchase timestamp for the DLC (http://www.onlineconversion.com/unix_time.htm).
+; Default is "0" (1970/01/01).
+;purchasetimestamp = 0
+
+[steam_misc]
+; Disables the internal SteamUser interface handler.
+; Does have an effect on the games that are using the license check for the DLC/application.
+; Default is "false".
+disableuserinterface = false
+
+[dlc]
+; DLC handling.
+; Format: <dlc_id> = <dlc_description>
+; e.g. : 247295 = Saints Row IV - GAT V Pack
+; If the DLC is not specified in this section
+; then it won't be unlocked
+`;
+                
+                // 添加所有DLC条目
+                dlcList.forEach(dlc => {
+                    config += `${dlc.id}=${dlc.name}\n`;
+                });
+                
+                return config;
+            }
+            
+            // 创建安全的文件夹名称
+            function createSafeFolderName(name) {
+                if (!name || name.trim() === "") {
+                    return "Steam_Game";
+                }
+                
+                // 移除非法文件名字符
+                let safeName = name.replace(/[<>:"/\\|?*]/g, '');
+                safeName = safeName.replace(/:/g, ' -');
+                safeName = safeName.replace(/\|/g, '-');
+                safeName = safeName.replace(/\?/g, '');
+                safeName = safeName.replace(/\*/g, '');
+                safeName = safeName.replace(/"/g, "'");
+                safeName = safeName.trim('. ');
+                
+                // 限制长度
+                if (safeName.length > 50) {
+                    safeName = safeName.substring(0, 50);
+                }
+                
+                if (!safeName) {
+                    safeName = "Steam_Game";
+                }
+                
+                return safeName;
+            }
+            
+            // 显示结果
+            function displayResults(appId, gameName, dlcList, config) {
+                gameData = { appId, gameName, dlcList };
+                configContent = config;
+                
+                // 显示游戏信息
+                const safeFolderName = createSafeFolderName(gameName);
+                gameInfo.innerHTML = `
+                    <p><strong>🎮 游戏名称:</strong> ${gameName}</p>
+                    <p><strong>🆔 基础游戏ID:</strong> ${appId}</p>
+                    <p><strong>📦 DLC数量:</strong> ${dlcList.length}</p>
+                    <p><strong>📁 建议文件夹名:</strong> ${safeFolderName}</p>
+                `;
+                
+                // 显示配置文件预览
+                configPreview.textContent = config;
+                
+                // 显示DLC列表
+                if (dlcList.length > 0) {
+                    let dlcHTML = `<h3><i class="fas fa-box-open"></i> DLC列表 (共${dlcList.length}个)</h3>`;
+                    dlcHTML += '<div class="dlc-list">';
+                    
+                    // 显示前12个DLC，避免页面过长
+                    const displayCount = Math.min(dlcList.length, 12);
+                    for (let i = 0; i < displayCount; i++) {
+                        const dlc = dlcList[i];
+                        const dlcDisplayName = dlc.name.length > 60 ? dlc.name.substring(0, 60) + '...' : dlc.name;
+                        dlcHTML += `
+                            <div class="dlc-item">
+                                <div class="dlc-id">${dlc.id}</div>
+                                <div class="dlc-name">${dlcDisplayName}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    dlcHTML += '</div>';
+                    
+                    if (dlcList.length > displayCount) {
+                        dlcHTML += `<p style="margin-top: 15px; color: #8a8a8a;">... 还有 ${dlcList.length - displayCount} 个DLC未显示</p>`;
+                    }
+                    
+                    dlcContainer.innerHTML = dlcHTML;
+                } else {
+                    dlcContainer.innerHTML = '<p style="color: #8a8a8a;">此游戏未发现DLC，配置文件仅包含基础设置</p>';
+                }
+                
+                // 显示输出容器
+                outputContainer.style.display = 'block';
+                
+                // 滚动到结果区域
+                outputContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+                showSuccess(`✅ 配置生成成功！共找到 ${dlcList.length} 个DLC`);
+            }
+            
+            // 下载配置文件
+            function downloadConfig() {
+                if (!configContent) {
+                    showError('没有可下载的配置文件内容');
+                    return;
+                }
+                
+                // 文件名固定为 cream_api.ini
+                const filename = `cream_api.ini`;
+                
+                const blob = new Blob([configContent], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                
+                showSuccess(`配置文件已下载: ${filename}`);
+            }
+            
+            // 复制配置内容到剪贴板
+            async function copyConfigToClipboard() {
+                if (!configContent) {
+                    showError('没有可复制的配置文件内容');
+                    return;
+                }
+                
+                try {
+                    await navigator.clipboard.writeText(configContent);
+                    showSuccess('配置内容已复制到剪贴板！');
+                } catch (error) {
+                    console.error('复制失败:', error);
+                    showError('复制失败，请手动复制配置内容');
+                }
+            }
+            
+            // 主函数：获取DLC信息并生成配置
+            async function fetchDLCInfo() {
+                const appId = parseInt(appIdInput.value.trim());
+                
+                if (!appId || appId <= 0) {
+                    showError('请输入有效的Steam App ID（正整数）');
+                    appIdInput.focus();
+                    return;
+                }
+                
+                // 禁用按钮，防止重复点击
+                fetchBtn.disabled = true;
+                testBtn.disabled = true;
+                hideMessages();
+                
+                try {
+                    // 获取游戏信息和DLC列表
+                    const result = await fetchGameInfo(appId);
+                    
+                    // 生成配置文件
+                    updateProgress('生成配置', 95, '正在生成配置文件...');
+                    const config = generateConfig(appId, result.dlcList, result.gameName);
+                    
+                    // 显示结果
+                    displayResults(appId, result.gameName, result.dlcList, config);
+                    
+                } catch (error) {
+                    console.error('获取DLC信息时出错:', error);
+                    showError(`获取DLC信息失败: ${error.message}`);
+                } finally {
+                    // 重新启用按钮
+                    fetchBtn.disabled = false;
+                    testBtn.disabled = false;
+                    updateProgress('完成', 100, '操作完成');
+                }
+            }
+            
+            // 事件监听器
+            fetchBtn.addEventListener('click', fetchDLCInfo);
+            
+            testBtn.addEventListener('click', testConnection);
+            
+            clearBtn.addEventListener('click', clearResults);
+            
+            downloadBtn.addEventListener('click', downloadConfig);
+            
+            copyBtn.addEventListener('click', copyConfigToClipboard);
+            
+            appIdInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    fetchDLCInfo();
+                }
+            });
+            
+            // 初始化：测试网络连接
+            setTimeout(() => {
+                // 自动测试连接，但不显示结果
+                testConnection();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
