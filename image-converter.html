@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全能图片处理工具 - 支持ICO转换/格式转换/裁剪/缩放</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+            border-radius: 15px;
+            border-bottom: 3px solid #00adb5;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #00adb5;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .subtitle {
+            color: #8a8a8a;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .image-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: #16213e;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .controls-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: #16213e;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            color: #00adb5;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2d4059;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #2d4059;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+        
+        .upload-area:hover {
+            border-color: #00adb5;
+            background-color: rgba(0, 173, 181, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 4rem;
+            color: #00adb5;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area p {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .image-preview-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #0f3460;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 2px solid #2d4059;
+            position: relative;
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+        
+        .placeholder-text {
+            color: #8a8a8a;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+        }
+        
+        .control-title {
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .format-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .format-btn {
+            background-color: #2d4059;
+            color: #e0e0e0;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+            font-weight: 600;
+        }
+        
+        .format-btn:hover {
+            background-color: #00adb5;
+            transform: translateY(-2px);
+        }
+        
+        .format-btn.active {
+            background-color: #00adb5;
+            box-shadow: 0 5px 15px rgba(0, 173, 181, 0.3);
+        }
+        
+        .ico-options {
+            background-color: rgba(15, 52, 96, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .ico-options h4 {
+            color: #f39c12;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .size-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .size-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .size-option input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .size-option label {
+            color: #b0b0b0;
+            cursor: pointer;
+        }
+        
+        .slider-container {
+            margin-bottom: 20px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+        }
+        
+        .slider-value {
+            color: #00adb5;
+            font-weight: bold;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #2d4059;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #00adb5;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 12px 15px;
+            background-color: #2d4059;
+            border: 2px solid #2d4059;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 18px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .process-btn {
+            background: linear-gradient(to right, #00adb5, #00858f);
+            color: white;
+        }
+        
+        .process-btn:hover {
+            background: linear-gradient(to right, #00858f, #006a72);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 173, 181, 0.3);
+        }
+        
+        .reset-btn {
+            background: linear-gradient(to right, #393e46, #222831);
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(to right, #222831, #1a1a2e);
+            transform: translateY(-3px);
+        }
+        
+        .info-panel {
+            background-color: #0f3460;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #00adb5;
+        }
+        
+        .info-title {
+            color: #00adb5;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-content {
+            color: #b0b0b0;
+            line-height: 1.8;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #8a8a8a;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+            border-top: 1px solid #2d4059;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 1100px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .image-section, .controls-section {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .format-btn {
+                min-width: 100px;
+            }
+            
+            .size-checkboxes {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .tab-controls {
+            display: flex;
+            border-bottom: 2px solid #2d4059;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab-btn:hover {
+            color: #e0e0e0;
+        }
+        
+        .tab-btn.active {
+            color: #00adb5;
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #00adb5;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .icon-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .icon-size-box {
+            width: 60px;
+            height: 60px;
+            background-color: #2d4059;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-size-box.active {
+            border-color: #00adb5;
+            background-color: rgba(0, 173, 181, 0.1);
+        }
+        
+        .icon-size-label {
+            font-size: 0.8rem;
+            color: #b0b0b0;
+        }
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #2d4059;
+            border-top: 4px solid #00adb5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-image"></i> 全能图片处理工具</h1>
+            <p class="subtitle">支持ICO转换、格式转换、智能裁剪、无损缩放、分辨率调整。</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="image-section">
+                <h2 class="section-title"><i class="fas fa-eye"></i> 图片预览</h2>
+                
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>点击选择图片或拖放到此区域</p>
+                    <p>支持 JPG、PNG、GIF、WebP、BMP、ICO 格式</p>
+                    <p>最大文件大小: 10MB</p>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
+                
+                <div class="image-preview-container">
+                    <img id="imagePreview" alt="预览图片">
+                    <div class="placeholder-text" id="placeholderText">
+                        <i class="fas fa-image" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <p>图片将在此处显示</p>
+                    </div>
+                </div>
+                
+                <div class="info-panel">
+                    <h3 class="info-title"><i class="fas fa-info-circle"></i> 图片信息</h3>
+                    <div class="info-content">
+                        <p id="imageInfo">未加载图片</p>
+                        <p id="imageDimensions">尺寸: --</p>
+                        <p id="imageSize">文件大小: --</p>
+                        <p id="imageFormat">格式: --</p>
+                    </div>
+                </div>
+                
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>正在生成ICO文件，请稍候...</p>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <div class="tab-controls">
+                    <button class="tab-btn active" data-tab="format">格式转换</button>
+                    <button class="tab-btn" data-tab="resize">缩放调整</button>
+                    <button class="tab-btn" data-tab="crop">裁剪编辑</button>
+                    <button class="tab-btn" data-tab="advanced">高级设置</button>
+                </div>
+                
+                <!-- 格式转换标签 -->
+                <div class="tab-content active" id="formatTab">
+                    <h3 class="control-title"><i class="fas fa-exchange-alt"></i> 输出格式选择</h3>
+                    <div class="format-buttons">
+                        <button class="format-btn active" data-format="jpg">JPG</button>
+                        <button class="format-btn" data-format="png">PNG</button>
+                        <button class="format-btn" data-format="webp">WebP</button>
+                        <button class="format-btn" data-format="gif">GIF</button>
+                        <button class="format-btn" data-format="bmp">BMP</button>
+                        <button class="format-btn" data-format="ico">ICO</button>
+                    </div>
+                    
+                    <!-- ICO特殊选项 -->
+                    <div class="ico-options" id="icoOptions">
+                        <h4><i class="fas fa-icons"></i> ICO图标设置</h4>
+                        <p style="color: #b0b0b0; margin-bottom: 15px;">ICO文件可包含多个尺寸，Windows会选择最合适的尺寸显示。</p>
+                        
+                        <h5 style="color: #e0e0e0; margin-bottom: 10px;">包含的尺寸:</h5>
+                        <div class="size-checkboxes">
+                            <div class="size-option">
+                                <input type="checkbox" id="size16" checked>
+                                <label for="size16">16×16</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="size32" checked>
+                                <label for="size32">32×32</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="size48" checked>
+                                <label for="size48">48×48</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="size64">
+                                <label for="size64">64×64</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="size128">
+                                <label for="size128">128×128</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="checkbox" id="size256">
+                                <label for="size256">256×256</label>
+                            </div>
+                        </div>
+                        
+                        <div class="icon-preview">
+                            <div class="icon-size-box active" data-size="16">
+                                <span class="icon-size-label">16</span>
+                            </div>
+                            <div class="icon-size-box active" data-size="32">
+                                <span class="icon-size-label">32</span>
+                            </div>
+                            <div class="icon-size-box active" data-size="48">
+                                <span class="icon-size-label">48</span>
+                            </div>
+                            <div class="icon-size-box" data-size="64">
+                                <span class="icon-size-label">64</span>
+                            </div>
+                            <div class="icon-size-box" data-size="128">
+                                <span class="icon-size-label">128</span>
+                            </div>
+                            <div class="icon-size-box" data-size="256">
+                                <span class="icon-size-label">256</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-sliders-h"></i> JPG 质量设置</h3>
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>质量:</span>
+                                <span class="slider-value" id="qualityValue">85%</span>
+                            </div>
+                            <input type="range" id="qualitySlider" min="1" max="100" value="85">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-adjust"></i> PNG 透明度</h3>
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>透明度:</span>
+                                <span class="slider-value" id="alphaValue">100%</span>
+                            </div>
+                            <input type="range" id="alphaSlider" min="0" max="100" value="100">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 缩放调整标签 -->
+                <div class="tab-content" id="resizeTab">
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-expand-alt"></i> 缩放比例</h3>
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>缩放:</span>
+                                <span class="slider-value" id="scaleValue">100%</span>
+                            </div>
+                            <input type="range" id="scaleSlider" min="10" max="300" value="100">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-ruler-combined"></i> 自定义尺寸</h3>
+                        <div class="input-group">
+                            <input type="number" id="widthInput" placeholder="宽度 (px)" min="10">
+                            <input type="number" id="heightInput" placeholder="高度 (px)" min="10">
+                        </div>
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <input type="checkbox" id="lockAspectRatio" checked>
+                            <label for="lockAspectRatio" style="color: #b0b0b0; margin-left: 8px;">锁定宽高比</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 裁剪编辑标签 -->
+                <div class="tab-content" id="cropTab">
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-crop"></i> 裁剪区域</h3>
+                        <div class="input-group">
+                            <input type="number" id="cropX" placeholder="X 坐标" min="0">
+                            <input type="number" id="cropY" placeholder="Y 坐标" min="0">
+                        </div>
+                        <div class="input-group">
+                            <input type="number" id="cropWidth" placeholder="宽度 (px)" min="10">
+                            <input type="number" id="cropHeight" placeholder="高度 (px)" min="10">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-cut"></i> 预设裁剪比例</h3>
+                        <div class="format-buttons">
+                            <button class="format-btn" data-crop="free">自由</button>
+                            <button class="format-btn" data-crop="1:1">1:1 (方形)</button>
+                            <button class="format-btn" data-crop="16:9">16:9 (宽屏)</button>
+                            <button class="format-btn" data-crop="4:3">4:3 (标准)</button>
+                            <button class="format-btn" data-crop="9:16">9:16 (手机)</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 高级设置标签 -->
+                <div class="tab-content" id="advancedTab">
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-tachometer-alt"></i> 分辨率调整 (DPI/PPI)</h3>
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>分辨率:</span>
+                                <span class="slider-value" id="dpiValue">72 DPI</span>
+                            </div>
+                            <input type="range" id="dpiSlider" min="72" max="600" value="72">
+                        </div>
+                        <p style="color: #8a8a8a; font-size: 0.9rem; margin-top: 8px;">调整图像打印分辨率，不影响屏幕显示尺寸</p>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-filter"></i> 图像滤镜</h3>
+                        <div class="format-buttons">
+                            <button class="format-btn" data-filter="none">无</button>
+                            <button class="format-btn" data-filter="grayscale">灰度</button>
+                            <button class="format-btn" data-filter="sepia">复古</button>
+                            <button class="format-btn" data-filter="invert">反色</button>
+                            <button class="format-btn" data-filter="blur">模糊</button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3 class="control-title"><i class="fas fa-sync-alt"></i> 旋转与翻转</h3>
+                        <div class="format-buttons">
+                            <button class="format-btn" data-rotate="0">0°</button>
+                            <button class="format-btn" data-rotate="90">90°</button>
+                            <button class="format-btn" data-rotate="180">180°</button>
+                            <button class="format-btn" data-rotate="270">270°</button>
+                            <button class="format-btn" data-flip="horizontal">水平翻转</button>
+                            <button class="format-btn" data-flip="vertical">垂直翻转</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn process-btn" id="processBtn">
+                        <i class="fas fa-magic"></i> 处理并下载图片
+                    </button>
+                    <button class="action-btn reset-btn" id="resetBtn">
+                        <i class="fas fa-redo"></i> 重置所有设置
+                    </button>
+                </div>
+                
+                <div class="info-panel">
+                    <h3 class="info-title"><i class="fas fa-lightbulb"></i> 使用提示</h3>
+                    <div class="info-content">
+                        <p>1. 首先上传图片，然后在各个标签页中调整设置</p>
+                        <p>2. <strong>ICO转换</strong>: 选择ICO格式后可以设置包含的多个尺寸</p>
+                        <p>3. 处理后的图片会直接下载到您的设备</p>
+                        <p>4. 所有操作均在您的浏览器中完成，图片不会上传到任何服务器</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 全能图片处理工具 | 完全在浏览器中运行，保障您的隐私安全</p>
+            <p>支持格式: JPG, PNG, GIF, WebP, BMP, ICO | 最大文件大小: 10MB</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const imagePreview = document.getElementById('imagePreview');
+            const placeholderText = document.getElementById('placeholderText');
+            const imageInfo = document.getElementById('imageInfo');
+            const imageDimensions = document.getElementById('imageDimensions');
+            const imageSize = document.getElementById('imageSize');
+            const imageFormat = document.getElementById('imageFormat');
+            const processBtn = document.getElementById('processBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            // ICO相关元素
+            const icoOptions = document.getElementById('icoOptions');
+            const sizeCheckboxes = document.querySelectorAll('.size-checkboxes input[type="checkbox"]');
+            const iconSizeBoxes = document.querySelectorAll('.icon-size-box');
+            
+            // 标签页切换
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // 格式选择
+            const formatBtns = document.querySelectorAll('.format-btn[data-format]');
+            
+            // 滑块和输入框
+            const qualitySlider = document.getElementById('qualitySlider');
+            const qualityValue = document.getElementById('qualityValue');
+            const alphaSlider = document.getElementById('alphaSlider');
+            const alphaValue = document.getElementById('alphaValue');
+            const scaleSlider = document.getElementById('scaleSlider');
+            const scaleValue = document.getElementById('scaleValue');
+            const widthInput = document.getElementById('widthInput');
+            const heightInput = document.getElementById('heightInput');
+            const lockAspectRatio = document.getElementById('lockAspectRatio');
+            const dpiSlider = document.getElementById('dpiSlider');
+            const dpiValue = document.getElementById('dpiValue');
+            
+            // 裁剪相关
+            const cropX = document.getElementById('cropX');
+            const cropY = document.getElementById('cropY');
+            const cropWidth = document.getElementById('cropWidth');
+            const cropHeight = document.getElementById('cropHeight');
+            const cropRatioBtns = document.querySelectorAll('.format-btn[data-crop]');
+            
+            // 滤镜和旋转
+            const filterBtns = document.querySelectorAll('.format-btn[data-filter]');
+            const rotateBtns = document.querySelectorAll('.format-btn[data-rotate]');
+            const flipBtns = document.querySelectorAll('.format-btn[data-flip]');
+            
+            // 全局变量
+            let originalImage = null;
+            let currentImage = null;
+            let originalWidth = 0;
+            let originalHeight = 0;
+            let originalAspectRatio = 1;
+            let selectedFormat = 'jpg';
+            let selectedFilter = 'none';
+            let rotateAngle = 0;
+            let flipHorizontal = false;
+            let flipVertical = false;
+            let isProcessing = false;
+            
+            // 初始化事件监听器
+            function initEventListeners() {
+                // 文件上传
+                uploadArea.addEventListener('click', () => fileInput.click());
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = '#00adb5';
+                    uploadArea.style.backgroundColor = 'rgba(0, 173, 181, 0.1)';
+                });
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.style.borderColor = '#2d4059';
+                    uploadArea.style.backgroundColor = '';
+                });
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = '#2d4059';
+                    uploadArea.style.backgroundColor = '';
+                    
+                    if (e.dataTransfer.files.length) {
+                        fileInput.files = e.dataTransfer.files;
+                        handleFileSelect(e);
+                    }
+                });
+                fileInput.addEventListener('change', handleFileSelect);
+                
+                // 标签页切换
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const tabId = btn.getAttribute('data-tab');
+                        
+                        // 更新激活的标签按钮
+                        tabBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        
+                        // 更新激活的标签内容
+                        tabContents.forEach(content => {
+                            content.classList.remove('active');
+                            if (content.id === `${tabId}Tab`) {
+                                content.classList.add('active');
+                            }
+                        });
+                    });
+                });
+                
+                // 格式选择
+                formatBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        formatBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        selectedFormat = btn.getAttribute('data-format');
+                        
+                        // 显示/隐藏ICO选项
+                        if (selectedFormat === 'ico') {
+                            icoOptions.style.display = 'block';
+                        } else {
+                            icoOptions.style.display = 'none';
+                        }
+                        
+                        // 根据选择的格式显示/隐藏相关设置
+                        if (selectedFormat === 'jpg') {
+                            document.getElementById('qualitySlider').parentElement.parentElement.style.display = 'block';
+                            document.getElementById('alphaSlider').parentElement.parentElement.style.display = 'none';
+                        } else if (selectedFormat === 'png') {
+                            document.getElementById('qualitySlider').parentElement.parentElement.style.display = 'none';
+                            document.getElementById('alphaSlider').parentElement.parentElement.style.display = 'block';
+                        } else {
+                            document.getElementById('qualitySlider').parentElement.parentElement.style.display = 'none';
+                            document.getElementById('alphaSlider').parentElement.parentElement.style.display = 'none';
+                        }
+                    });
+                });
+                
+                // ICO尺寸选择
+                sizeCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        const size = checkbox.id.replace('size', '');
+                        const iconBox = document.querySelector(`.icon-size-box[data-size="${size}"]`);
+                        
+                        if (checkbox.checked) {
+                            iconBox.classList.add('active');
+                        } else {
+                            iconBox.classList.remove('active');
+                        }
+                    });
+                });
+                
+                // 图标尺寸框点击事件
+                iconSizeBoxes.forEach(box => {
+                    box.addEventListener('click', () => {
+                        const size = box.getAttribute('data-size');
+                        const checkbox = document.getElementById(`size${size}`);
+                        
+                        if (checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                            box.classList.toggle('active');
+                        }
+                    });
+                });
+                
+                // 滑块事件
+                qualitySlider.addEventListener('input', () => {
+                    qualityValue.textContent = `${qualitySlider.value}%`;
+                });
+                
+                alphaSlider.addEventListener('input', () => {
+                    alphaValue.textContent = `${alphaSlider.value}%`;
+                });
+                
+                scaleSlider.addEventListener('input', () => {
+                    scaleValue.textContent = `${scaleSlider.value}%`;
+                    
+                    if (originalWidth && originalHeight) {
+                        const scale = scaleSlider.value / 100;
+                        widthInput.value = Math.round(originalWidth * scale);
+                        heightInput.value = Math.round(originalHeight * scale);
+                    }
+                });
+                
+                dpiSlider.addEventListener('input', () => {
+                    dpiValue.textContent = `${dpiSlider.value} DPI`;
+                });
+                
+                // 宽度/高度输入
+                widthInput.addEventListener('input', () => {
+                    if (lockAspectRatio.checked && originalAspectRatio && widthInput.value) {
+                        heightInput.value = Math.round(widthInput.value / originalAspectRatio);
+                        updateScaleSlider();
+                    }
+                });
+                
+                heightInput.addEventListener('input', () => {
+                    if (lockAspectRatio.checked && originalAspectRatio && heightInput.value) {
+                        widthInput.value = Math.round(heightInput.value * originalAspectRatio);
+                        updateScaleSlider();
+                    }
+                });
+                
+                // 裁剪比例
+                cropRatioBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        cropRatioBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        
+                        const ratio = btn.getAttribute('data-crop');
+                        if (ratio !== 'free' && originalWidth && originalHeight) {
+                            const [ratioW, ratioH] = ratio.split(':').map(Number);
+                            const targetRatio = ratioW / ratioH;
+                            
+                            let newWidth, newHeight;
+                            const currentRatio = originalWidth / originalHeight;
+                            
+                            if (currentRatio > targetRatio) {
+                                // 图片比目标比例宽，以高度为基准
+                                newHeight = originalHeight;
+                                newWidth = Math.round(newHeight * targetRatio);
+                            } else {
+                                // 图片比目标比例高，以宽度为基准
+                                newWidth = originalWidth;
+                                newHeight = Math.round(newWidth / targetRatio);
+                            }
+                            
+                            // 居中裁剪
+                            cropX.value = Math.round((originalWidth - newWidth) / 2);
+                            cropY.value = Math.round((originalHeight - newHeight) / 2);
+                            cropWidth.value = newWidth;
+                            cropHeight.value = newHeight;
+                        }
+                    });
+                });
+                
+                // 滤镜
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        selectedFilter = btn.getAttribute('data-filter');
+                        applyPreviewFilter();
+                    });
+                });
+                
+                // 旋转
+                rotateBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        rotateBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        rotateAngle = parseInt(btn.getAttribute('data-rotate'));
+                        applyPreviewFilter();
+                    });
+                });
+                
+                // 翻转
+                flipBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const flipType = btn.getAttribute('data-flip');
+                        if (flipType === 'horizontal') {
+                            flipHorizontal = !flipHorizontal;
+                            btn.classList.toggle('active');
+                        } else if (flipType === 'vertical') {
+                            flipVertical = !flipVertical;
+                            btn.classList.toggle('active');
+                        }
+                        applyPreviewFilter();
+                    });
+                });
+                
+                // 处理按钮
+                processBtn.addEventListener('click', processImage);
+                
+                // 重置按钮
+                resetBtn.addEventListener('click', resetAllSettings);
+            }
+            
+            // 处理文件选择
+            function handleFileSelect(e) {
+                const file = e.target.files[0] || e.dataTransfer.files[0];
+                
+                if (!file || !file.type.match('image.*')) {
+                    alert('请选择有效的图片文件！');
+                    return;
+                }
+                
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('文件太大！请选择小于10MB的图片。');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    originalImage = new Image();
+                    originalImage.onload = function() {
+                        originalWidth = originalImage.width;
+                        originalHeight = originalImage.height;
+                        originalAspectRatio = originalWidth / originalHeight;
+                        
+                        // 显示图片
+                        imagePreview.src = event.target.result;
+                        imagePreview.style.display = 'block';
+                        placeholderText.style.display = 'none';
+                        
+                        // 更新图片信息
+                        imageInfo.textContent = `文件名: ${file.name}`;
+                        imageDimensions.textContent = `尺寸: ${originalWidth} × ${originalHeight} 像素`;
+                        imageSize.textContent = `文件大小: ${formatFileSize(file.size)}`;
+                        imageFormat.textContent = `格式: ${getFileExtension(file.name)}`;
+                        
+                        // 初始化输入框
+                        widthInput.value = originalWidth;
+                        heightInput.value = originalHeight;
+                        cropWidth.value = originalWidth;
+                        cropHeight.value = originalHeight;
+                        cropX.value = 0;
+                        cropY.value = 0;
+                        
+                        // 重置缩放滑块
+                        scaleSlider.value = 100;
+                        scaleValue.textContent = '100%';
+                        
+                        // 创建当前图片副本用于预览
+                        currentImage = new Image();
+                        currentImage.src = event.target.result;
+                        
+                        // 应用默认滤镜预览
+                        applyPreviewFilter();
+                    };
+                    originalImage.src = event.target.result;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // 更新缩放滑块
+            function updateScaleSlider() {
+                if (originalWidth && widthInput.value) {
+                    const scale = (widthInput.value / originalWidth) * 100;
+                    scaleSlider.value = Math.round(scale);
+                    scaleValue.textContent = `${Math.round(scale)}%`;
+                }
+            }
+            
+            // 应用预览滤镜
+            function applyPreviewFilter() {
+                if (!currentImage) return;
+                
+                // 创建临时canvas应用滤镜效果
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // 设置canvas尺寸
+                canvas.width = originalWidth;
+                canvas.height = originalHeight;
+                
+                // 应用变换
+                ctx.save();
+                
+                // 移动到中心
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                
+                // 应用旋转
+                if (rotateAngle !== 0) {
+                    ctx.rotate(rotateAngle * Math.PI / 180);
+                }
+                
+                // 应用翻转
+                let scaleX = flipHorizontal ? -1 : 1;
+                let scaleY = flipVertical ? -1 : 1;
+                ctx.scale(scaleX, scaleY);
+                
+                // 绘制图像
+                ctx.drawImage(
+                    currentImage, 
+                    -originalWidth / 2, 
+                    -originalHeight / 2, 
+                    originalWidth, 
+                    originalHeight
+                );
+                
+                ctx.restore();
+                
+                // 应用滤镜
+                if (selectedFilter !== 'none') {
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+                    
+                    if (selectedFilter === 'grayscale') {
+                        // 灰度滤镜
+                        for (let i = 0; i < data.length; i += 4) {
+                            const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                            data[i] = avg;     // 红
+                            data[i + 1] = avg; // 绿
+                            data[i + 2] = avg; // 蓝
+                        }
+                    } else if (selectedFilter === 'sepia') {
+                        // 复古滤镜
+                        for (let i = 0; i < data.length; i += 4) {
+                            const r = data[i];
+                            const g = data[i + 1];
+                            const b = data[i + 2];
+                            
+                            data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
+                            data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+                            data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+                        }
+                    } else if (selectedFilter === 'invert') {
+                        // 反色滤镜
+                        for (let i = 0; i < data.length; i += 4) {
+                            data[i] = 255 - data[i];         // 红
+                            data[i + 1] = 255 - data[i + 1]; // 绿
+                            data[i + 2] = 255 - data[i + 2]; // 蓝
+                        }
+                    } else if (selectedFilter === 'blur') {
+                        // 简单模糊滤镜（简化版）
+                        const tempCanvas = document.createElement('canvas');
+                        const tempCtx = tempCanvas.getContext('2d');
+                        tempCanvas.width = canvas.width;
+                        tempCanvas.height = canvas.height;
+                        tempCtx.drawImage(canvas, 0, 0);
+                        
+                        // 应用简单的模糊效果
+                        ctx.filter = 'blur(3px)';
+                        ctx.drawImage(tempCanvas, 0, 0);
+                        ctx.filter = 'none';
+                    }
+                    
+                    ctx.putImageData(imageData, 0, 0);
+                }
+                
+                // 更新预览
+                imagePreview.src = canvas.toDataURL();
+            }
+            
+            // ICO文件生成器
+            function createICOFile(images) {
+                // ICO文件结构:
+                // 1. ICO文件头 (6字节)
+                // 2. 图标目录项 (每个16字节)
+                // 3. 每个图标的图像数据
+                
+                const iconCount = images.length;
+                
+                // 计算总大小
+                let totalSize = 6 + (iconCount * 16); // 头部 + 目录项
+                let offsets = [];
+                
+                // 计算每个图像的偏移量
+                for (let i = 0; i < iconCount; i++) {
+                    offsets.push(totalSize);
+                    totalSize += images[i].data.length;
+                }
+                
+                // 创建ArrayBuffer
+                const buffer = new ArrayBuffer(totalSize);
+                const view = new DataView(buffer);
+                
+                // 写入ICO文件头
+                view.setUint16(0, 0, true);      // 保留字，必须为0
+                view.setUint16(2, 1, true);      // 文件类型，1=ICO
+                view.setUint16(4, iconCount, true); // 图标数量
+                
+                let offsetIndex = 6;
+                let dataOffset = 6 + (iconCount * 16);
+                
+                // 写入每个图标的目录项
+                for (let i = 0; i < iconCount; i++) {
+                    const img = images[i];
+                    const width = img.width === 256 ? 0 : img.width;
+                    const height = img.height === 256 ? 0 : img.height;
+                    
+                    view.setUint8(offsetIndex, width);      // 宽度
+                    view.setUint8(offsetIndex + 1, height); // 高度
+                    view.setUint8(offsetIndex + 2, 0);      // 颜色数 (0=256色以上)
+                    view.setUint8(offsetIndex + 3, 0);      // 保留字
+                    view.setUint16(offsetIndex + 4, 1, true); // 颜色平面数
+                    view.setUint16(offsetIndex + 6, img.bpp, true); // 每像素位数
+                    view.setUint32(offsetIndex + 8, img.data.length, true); // 图像数据大小
+                    view.setUint32(offsetIndex + 12, offsets[i], true); // 图像数据偏移量
+                    
+                    offsetIndex += 16;
+                }
+                
+                // 写入图像数据
+                for (let i = 0; i < iconCount; i++) {
+                    const imgData = images[i].data;
+                    for (let j = 0; j < imgData.length; j++) {
+                        view.setUint8(dataOffset + j, imgData[j]);
+                    }
+                    dataOffset += imgData.length;
+                }
+                
+                return buffer;
+            }
+            
+            // 将PNG图像数据转换为ICO格式
+            function canvasToICO(canvas, sizes) {
+                const images = [];
+                
+                for (const size of sizes) {
+                    // 创建临时canvas调整尺寸
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = size;
+                    tempCanvas.height = size;
+                    const ctx = tempCanvas.getContext('2d');
+                    
+                    // 高质量缩放
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    
+                    // 绘制并缩放图像
+                    ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, size, size);
+                    
+                    // 获取PNG数据
+                    const pngDataUrl = tempCanvas.toDataURL('image/png');
+                    const pngData = dataURLToArray(pngDataUrl);
+                    
+                    images.push({
+                        width: size,
+                        height: size,
+                        bpp: 32, // 32位带透明度
+                        data: pngData
+                    });
+                }
+                
+                // 创建ICO文件
+                return createICOFile(images);
+            }
+            
+            // 将DataURL转换为字节数组
+            function dataURLToArray(dataURL) {
+                const binaryString = atob(dataURL.split(',')[1]);
+                const bytes = new Uint8Array(binaryString.length);
+                
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                
+                return bytes;
+            }
+            
+            // 处理图片
+            async function processImage() {
+                if (!originalImage) {
+                    alert('请先上传图片！');
+                    return;
+                }
+                
+                if (isProcessing) return;
+                isProcessing = true;
+                
+                // 如果是ICO格式，显示加载指示器
+                if (selectedFormat === 'ico') {
+                    loadingSpinner.style.display = 'block';
+                    processBtn.disabled = true;
+                }
+                
+                try {
+                    // 创建canvas
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // 计算最终尺寸
+                    let finalWidth = parseInt(widthInput.value) || originalWidth;
+                    let finalHeight = parseInt(heightInput.value) || originalHeight;
+                    
+                    // 应用裁剪
+                    let cropParams = {
+                        x: parseInt(cropX.value) || 0,
+                        y: parseInt(cropY.value) || 0,
+                        width: parseInt(cropWidth.value) || originalWidth,
+                        height: parseInt(cropHeight.value) || originalHeight
+                    };
+                    
+                    // 限制裁剪区域在图片范围内
+                    cropParams.x = Math.max(0, Math.min(cropParams.x, originalWidth - 1));
+                    cropParams.y = Math.max(0, Math.min(cropParams.y, originalHeight - 1));
+                    cropParams.width = Math.max(1, Math.min(cropParams.width, originalWidth - cropParams.x));
+                    cropParams.height = Math.max(1, Math.min(cropParams.height, originalHeight - cropParams.y));
+                    
+                    // 设置canvas尺寸为最终输出尺寸
+                    canvas.width = finalWidth;
+                    canvas.height = finalHeight;
+                    
+                    // 填充背景（对于PNG透明背景）
+                    if (selectedFormat === 'png' || selectedFormat === 'ico') {
+                        ctx.fillStyle = 'transparent';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    } else {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+                    
+                    // 保存上下文状态
+                    ctx.save();
+                    
+                    // 应用变换（旋转和翻转）
+                    ctx.translate(canvas.width / 2, canvas.height / 2);
+                    
+                    if (rotateAngle !== 0) {
+                        ctx.rotate(rotateAngle * Math.PI / 180);
+                    }
+                    
+                    let scaleX = flipHorizontal ? -1 : 1;
+                    let scaleY = flipVertical ? -1 : 1;
+                    ctx.scale(scaleX, scaleY);
+                    
+                    // 计算绘制区域，保持裁剪部分的宽高比
+                    const drawWidth = flipHorizontal ? -finalWidth : finalWidth;
+                    const drawHeight = flipVertical ? -finalHeight : finalHeight;
+                    
+                    // 绘制裁剪后的图片，缩放到最终尺寸
+                    ctx.drawImage(
+                        originalImage,
+                        cropParams.x, cropParams.y, cropParams.width, cropParams.height, // 源裁剪区域
+                        -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight // 目标区域
+                    );
+                    
+                    ctx.restore();
+                    
+                    // 应用滤镜
+                    if (selectedFilter !== 'none') {
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const data = imageData.data;
+                        
+                        if (selectedFilter === 'grayscale') {
+                            for (let i = 0; i < data.length; i += 4) {
+                                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                                data[i] = avg;
+                                data[i + 1] = avg;
+                                data[i + 2] = avg;
+                            }
+                        } else if (selectedFilter === 'sepia') {
+                            for (let i = 0; i < data.length; i += 4) {
+                                const r = data[i];
+                                const g = data[i + 1];
+                                const b = data[i + 2];
+                                
+                                data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
+                                data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+                                data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+                            }
+                        } else if (selectedFilter === 'invert') {
+                            for (let i = 0; i < data.length; i += 4) {
+                                data[i] = 255 - data[i];
+                                data[i + 1] = 255 - data[i + 1];
+                                data[i + 2] = 255 - data[i + 2];
+                            }
+                        } else if (selectedFilter === 'blur') {
+                            const tempCanvas = document.createElement('canvas');
+                            const tempCtx = tempCanvas.getContext('2d');
+                            tempCanvas.width = canvas.width;
+                            tempCanvas.height = canvas.height;
+                            tempCtx.drawImage(canvas, 0, 0);
+                            
+                            ctx.filter = 'blur(3px)';
+                            ctx.drawImage(tempCanvas, 0, 0);
+                            ctx.filter = 'none';
+                        }
+                        
+                        ctx.putImageData(imageData, 0, 0);
+                    }
+                    
+                    // 获取处理后的图片数据
+                    let blob, filename;
+                    const quality = qualitySlider.value / 100;
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                    
+                    // 根据选择的格式生成图片
+                    if (selectedFormat === 'ico') {
+                        // 获取选中的ICO尺寸
+                        const selectedSizes = [];
+                        sizeCheckboxes.forEach(checkbox => {
+                            if (checkbox.checked) {
+                                const size = parseInt(checkbox.id.replace('size', ''));
+                                selectedSizes.push(size);
+                            }
+                        });
+                        
+                        if (selectedSizes.length === 0) {
+                            alert('请至少选择一个ICO尺寸！');
+                            loadingSpinner.style.display = 'none';
+                            processBtn.disabled = false;
+                            isProcessing = false;
+                            return;
+                        }
+                        
+                        // 生成ICO文件
+                        const icoBuffer = canvasToICO(canvas, selectedSizes);
+                        blob = new Blob([icoBuffer], { type: 'image/x-icon' });
+                        filename = `icon-${timestamp}.ico`;
+                        
+                    } else if (selectedFormat === 'jpg' || selectedFormat === 'jpeg') {
+                        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        blob = dataURLToBlob(dataUrl);
+                        filename = `image-${timestamp}.jpg`;
+                        
+                    } else if (selectedFormat === 'png') {
+                        const dataUrl = canvas.toDataURL('image/png');
+                        blob = dataURLToBlob(dataUrl);
+                        filename = `image-${timestamp}.png`;
+                        
+                    } else if (selectedFormat === 'webp') {
+                        const dataUrl = canvas.toDataURL('image/webp', quality);
+                        blob = dataURLToBlob(dataUrl);
+                        filename = `image-${timestamp}.webp`;
+                        
+                    } else if (selectedFormat === 'gif') {
+                        const dataUrl = canvas.toDataURL('image/gif');
+                        blob = dataURLToBlob(dataUrl);
+                        filename = `image-${timestamp}.gif`;
+                        
+                    } else if (selectedFormat === 'bmp') {
+                        const dataUrl = canvas.toDataURL('image/bmp');
+                        blob = dataURLToBlob(dataUrl);
+                        filename = `image-${timestamp}.bmp`;
+                        
+                    } else {
+                        const dataUrl = canvas.toDataURL('image/png');
+                        blob = dataURLToBlob(dataUrl);
+                        filename = `image-${timestamp}.png`;
+                    }
+                    
+                    // 下载文件
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    // 显示成功消息
+                    const sizeText = selectedFormat === 'ico' ? `包含 ${document.querySelectorAll('.size-checkboxes input:checked').length} 个尺寸` : '';
+                    alert(`图片处理完成！已下载为 ${selectedFormat.toUpperCase()} 格式。${sizeText}`);
+                    
+                } catch (error) {
+                    console.error('处理图片时出错:', error);
+                    alert('处理图片时出现错误，请重试。');
+                } finally {
+                    // 隐藏加载指示器
+                    loadingSpinner.style.display = 'none';
+                    processBtn.disabled = false;
+                    isProcessing = false;
+                }
+            }
+            
+            // 将DataURL转换为Blob
+            function dataURLToBlob(dataURL) {
+                const arr = dataURL.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                
+                return new Blob([u8arr], { type: mime });
+            }
+            
+            // 重置所有设置
+            function resetAllSettings() {
+                // 重置滑块
+                qualitySlider.value = 85;
+                qualityValue.textContent = '85%';
+                
+                alphaSlider.value = 100;
+                alphaValue.textContent = '100%';
+                
+                scaleSlider.value = 100;
+                scaleValue.textContent = '100%';
+                
+                dpiSlider.value = 72;
+                dpiValue.textContent = '72 DPI';
+                
+                // 重置输入框
+                if (originalWidth && originalHeight) {
+                    widthInput.value = originalWidth;
+                    heightInput.value = originalHeight;
+                    cropWidth.value = originalWidth;
+                    cropHeight.value = originalHeight;
+                    cropX.value = 0;
+                    cropY.value = 0;
+                }
+                
+                // 重置格式选择
+                formatBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-format') === 'jpg') {
+                        btn.classList.add('active');
+                    }
+                });
+                selectedFormat = 'jpg';
+                icoOptions.style.display = 'none';
+                
+                // 重置ICO尺寸选择
+                sizeCheckboxes.forEach(checkbox => {
+                    if (checkbox.id === 'size16' || checkbox.id === 'size32' || checkbox.id === 'size48') {
+                        checkbox.checked = true;
+                    } else {
+                        checkbox.checked = false;
+                    }
+                });
+                
+                iconSizeBoxes.forEach(box => {
+                    const size = box.getAttribute('data-size');
+                    if (size === '16' || size === '32' || size === '48') {
+                        box.classList.add('active');
+                    } else {
+                        box.classList.remove('active');
+                    }
+                });
+                
+                // 重置滤镜
+                filterBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-filter') === 'none') {
+                        btn.classList.add('active');
+                    }
+                });
+                selectedFilter = 'none';
+                
+                // 重置旋转
+                rotateBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-rotate') === '0') {
+                        btn.classList.add('active');
+                    }
+                });
+                rotateAngle = 0;
+                
+                // 重置翻转
+                flipBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                flipHorizontal = false;
+                flipVertical = false;
+                
+                // 重置裁剪比例
+                cropRatioBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-crop') === 'free') {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // 重置标签页
+                tabBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-tab') === 'format') {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === 'formatTab') {
+                        content.classList.add('active');
+                    }
+                });
+                
+                // 重新应用预览
+                if (currentImage) {
+                    applyPreviewFilter();
+                }
+                
+                alert('所有设置已重置！');
+            }
+            
+            // 格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+            
+            // 获取文件扩展名
+            function getFileExtension(filename) {
+                return filename.split('.').pop().toUpperCase();
+            }
+            
+            // 初始化应用
+            initEventListeners();
+            
+            // 初始显示格式相关设置
+            document.getElementById('qualitySlider').parentElement.parentElement.style.display = 'block';
+            document.getElementById('alphaSlider').parentElement.parentElement.style.display = 'none';
+            icoOptions.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
