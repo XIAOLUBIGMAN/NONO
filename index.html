@@ -156,6 +156,16 @@
             background: linear-gradient(to right, #00a085, #008b74);
         }
         
+        .dll-btn {
+            background: linear-gradient(to right, #f39c12, #e67e22);
+        }
+        
+        .dll-btn:hover {
+            background: linear-gradient(to right, #e67e22, #d35400);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(230, 126, 34, 0.3);
+        }
+        
         .progress-container {
             background-color: #0f3460;
             border-radius: 8px;
@@ -357,6 +367,9 @@
                     <button id="clearBtn" class="secondary-btn">
                         <i class="fas fa-trash"></i> 清空结果
                     </button>
+                    <button id="downloadDllBtn" class="dll-btn">
+                        <i class="fas fa-file-archive"></i> 下载DLL文件
+                    </button>
                 </div>
             </div>
             
@@ -409,7 +422,8 @@
                     <li>输入Steam游戏的App ID（可在商店页面URL中找到，如https://store.steampowered.com/app/<strong>292030</strong>/）</li>
                     <li>点击"获取DLC信息"按钮，等待工具获取游戏信息和DLC列表</li>
                     <li>生成配置文件后，点击"下载配置文件"按钮保存cream_api.ini文件</li>
-                    <li>将下载的cream_api.ini文件放置到游戏根目录（与原版steam_api.dll同一目录）</li>
+                    <li>点击"下载DLL文件"按钮下载所需的DLL文件压缩包</li>
+                    <li>将下载的cream_api.ini文件和DLL文件放置到游戏根目录（与原版steam_api.dll同一目录）</li>
                     <li>将原版steam_api.dll重命名为steam_api_o.dll（64位游戏则为steam_api64.dll重命名为steam_api64_o.dll）</li>
                     <li>运行游戏，DLC内容应该已经解锁</li>
                 </ol>
@@ -432,6 +446,7 @@
             const clearBtn = document.getElementById('clearBtn');
             const downloadBtn = document.getElementById('downloadBtn');
             const copyBtn = document.getElementById('copyBtn');
+            const downloadDllBtn = document.getElementById('downloadDllBtn');
             const progressContainer = document.getElementById('progressContainer');
             const progressStep = document.getElementById('progressStep');
             const progressPercent = document.getElementById('progressPercent');
@@ -734,45 +749,16 @@ disableuserinterface = false
                 return config;
             }
             
-            // 创建安全的文件夹名称
-            function createSafeFolderName(name) {
-                if (!name || name.trim() === "") {
-                    return "Steam_Game";
-                }
-                
-                // 移除非法文件名字符
-                let safeName = name.replace(/[<>:"/\\|?*]/g, '');
-                safeName = safeName.replace(/:/g, ' -');
-                safeName = safeName.replace(/\|/g, '-');
-                safeName = safeName.replace(/\?/g, '');
-                safeName = safeName.replace(/\*/g, '');
-                safeName = safeName.replace(/"/g, "'");
-                safeName = safeName.trim('. ');
-                
-                // 限制长度
-                if (safeName.length > 50) {
-                    safeName = safeName.substring(0, 50);
-                }
-                
-                if (!safeName) {
-                    safeName = "Steam_Game";
-                }
-                
-                return safeName;
-            }
-            
             // 显示结果
             function displayResults(appId, gameName, dlcList, config) {
                 gameData = { appId, gameName, dlcList };
                 configContent = config;
                 
                 // 显示游戏信息
-                const safeFolderName = createSafeFolderName(gameName);
                 gameInfo.innerHTML = `
                     <p><strong>🎮 游戏名称:</strong> ${gameName}</p>
                     <p><strong>🆔 基础游戏ID:</strong> ${appId}</p>
                     <p><strong>📦 DLC数量:</strong> ${dlcList.length}</p>
-                    <p><strong>📁 建议文件夹名:</strong> ${safeFolderName}</p>
                 `;
                 
                 // 显示配置文件预览
@@ -855,6 +841,23 @@ disableuserinterface = false
                 }
             }
             
+            // 下载DLL文件
+            function downloadDllFiles() {
+                // 假设DLL压缩文件在my文件夹内，文件名为"steam_api64.dll and steam_api.dll.rar"
+                // 注意：文件名中有空格，需要进行URL编码
+                const dllFileName = "steam_api64.dll and steam_api.dll.rar";
+                const encodedFileName = encodeURIComponent(dllFileName);
+                const fileUrl = `./my/${encodedFileName}`;
+                
+                // 创建下载链接
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.download = dllFileName;
+                a.click();
+                
+                showSuccess('DLL文件下载已开始！文件名为: ' + dllFileName);
+            }
+            
             // 主函数：获取DLC信息并生成配置
             async function fetchDLCInfo() {
                 const appId = parseInt(appIdInput.value.trim());
@@ -902,6 +905,8 @@ disableuserinterface = false
             downloadBtn.addEventListener('click', downloadConfig);
             
             copyBtn.addEventListener('click', copyConfigToClipboard);
+            
+            downloadDllBtn.addEventListener('click', downloadDllFiles);
             
             appIdInput.addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
