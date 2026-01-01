@@ -26,7 +26,7 @@
         
         .container {
             text-align: center;
-            max-width: 500px;
+            max-width: 800px;
             width: 100%;
         }
         
@@ -46,14 +46,29 @@
             font-size: 1.1rem;
         }
         
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
         .tool-card {
             background: linear-gradient(145deg, #16213e, #0f3460);
             border-radius: 15px;
-            padding: 40px 30px;
+            padding: 30px 25px;
             border: 2px solid #2d4059;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         
         .tool-card:hover {
@@ -63,21 +78,22 @@
         }
         
         .tool-icon {
-            font-size: 4rem;
+            font-size: 3.5rem;
             color: #00adb5;
             margin-bottom: 20px;
         }
         
         .tool-card h2 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             margin-bottom: 15px;
             color: #e0e0e0;
         }
         
         .tool-card p {
             color: #b0b0b0;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             line-height: 1.6;
+            flex-grow: 1;
         }
         
         .tool-link {
@@ -85,9 +101,9 @@
             background: linear-gradient(to right, #00adb5, #00858f);
             color: white;
             text-decoration: none;
-            padding: 15px 40px;
+            padding: 12px 30px;
             border-radius: 8px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             transition: all 0.3s ease;
             border: none;
@@ -116,7 +132,7 @@
             }
             
             .tool-card {
-                padding: 30px 20px;
+                padding: 25px 20px;
             }
             
             .tool-icon {
@@ -124,8 +140,12 @@
             }
             
             .tool-link {
-                padding: 12px 30px;
-                font-size: 1.1rem;
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+            
+            .tools-grid {
+                gap: 20px;
             }
         }
     </style>
@@ -135,15 +155,30 @@
         <h1><i class="fas fa-tools"></i> 我的工具</h1>
         <p class="subtitle">点击下方工具卡片开始使用</p>
         
-        <div class="tool-card">
-            <div class="tool-icon">
-                <i class="fas fa-gamepad"></i>
+        <div class="tools-grid">
+            <!-- Steam DLC配置生成器 -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h2>Steam DLC配置生成器</h2>
+                <p>在线生成cream_api.ini配置文件，解锁Steam游戏DLC内容。通过Steam API获取游戏DLC信息，一键生成配置文件。</p>
+                <a href="dlctool.html" class="tool-link">
+                    开始使用 <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
-            <h2>Steam DLC配置生成器</h2>
-            <p>在线生成cream_api.ini配置文件，解锁Steam游戏DLC内容。通过Steam API获取游戏DLC信息，一键生成配置文件。</p>
-            <a href="dlctool.html" class="tool-link">
-                开始使用 <i class="fas fa-arrow-right"></i>
-            </a>
+            
+            <!-- 图片处理工具 -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <h2>全能图片处理工具</h2>
+                <p>支持格式转换(JPG/PNG/WebP/GIF/BMP/ICO)、智能裁剪、无损缩放、分辨率调整</p>
+                <a href="image-converter.html" class="tool-link">
+                    开始使用 <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
         </div>
         
         <div class="footer">
@@ -155,15 +190,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 简单加载动画
-            const toolCard = document.querySelector('.tool-card');
-            toolCard.style.opacity = '0';
-            toolCard.style.transform = 'translateY(20px)';
+            const toolCards = document.querySelectorAll('.tool-card');
             
-            setTimeout(() => {
-                toolCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                toolCard.style.opacity = '1';
-                toolCard.style.transform = 'translateY(0)';
-            }, 300);
+            toolCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 + index * 150);
+            });
         });
     </script>
 </body>
