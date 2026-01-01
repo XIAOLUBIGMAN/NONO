@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #00adb5;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .subtitle {
+            color: #8a8a8a;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        
+        .tool-card {
+            background: linear-gradient(145deg, #16213e, #0f3460);
+            border-radius: 15px;
+            padding: 40px 30px;
+            border: 2px solid #2d4059;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 173, 181, 0.2);
+            border-color: #00adb5;
+        }
+        
+        .tool-icon {
+            font-size: 4rem;
+            color: #00adb5;
+            margin-bottom: 20px;
+        }
+        
+        .tool-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+        
+        .tool-card p {
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .tool-link {
+            display: inline-block;
+            background: linear-gradient(to right, #00adb5, #00858f);
+            color: white;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .tool-link:hover {
+            background: linear-gradient(to right, #00858f, #006a72);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(0, 173, 181, 0.3);
+        }
+        
+        .tool-link i {
+            margin-left: 10px;
+        }
+        
+        .footer {
+            color: #8a8a8a;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tool-card {
+                padding: 30px 20px;
+            }
+            
+            .tool-icon {
+                font-size: 3rem;
+            }
+            
+            .tool-link {
+                padding: 12px 30px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-tools"></i> 我的工具</h1>
+        <p class="subtitle">点击下方工具卡片开始使用</p>
+        
+        <div class="tool-card">
+            <div class="tool-icon">
+                <i class="fas fa-gamepad"></i>
+            </div>
+            <h2>Steam DLC配置生成器</h2>
+            <p>在线生成cream_api.ini配置文件，解锁Steam游戏DLC内容。通过Steam API获取游戏DLC信息，一键生成配置文件。</p>
+            <a href="dlctool.html" class="tool-link">
+                开始使用 <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 我的工具 | 工具开发者: 小路大王大王大王 | 3DM: tangdgd</p>
+            <p>仅供学习和研究使用</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 简单加载动画
+            const toolCard = document.querySelector('.tool-card');
+            toolCard.style.opacity = '0';
+            toolCard.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                toolCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                toolCard.style.opacity = '1';
+                toolCard.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
+</body>
+</html>
