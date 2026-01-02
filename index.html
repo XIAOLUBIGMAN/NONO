@@ -59,6 +59,12 @@
             }
         }
         
+        @media (min-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
         .tool-card {
             background: linear-gradient(145deg, #16213e, #0f3460);
             border-radius: 15px;
@@ -156,7 +162,7 @@
         <p class="subtitle">点击下方工具卡片开始使用</p>
         
         <div class="tools-grid">
-            <!-- Steam DLC配置生成器 -->
+            
             <div class="tool-card">
                 <div class="tool-icon">
                     <i class="fas fa-gamepad"></i>
@@ -168,17 +174,28 @@
                 </a>
             </div>
             
-            <!-- 图片处理工具 -->
             <div class="tool-card">
                 <div class="tool-icon">
                     <i class="fas fa-image"></i>
                 </div>
                 <h2>全能图片处理工具</h2>
-                <p>支持格式转换(JPG/PNG/WebP/GIF/BMP/ICO)、智能裁剪、无损缩放、分辨率调整</p>
+                <p>支持格式转换(JPG/PNG/WebP/GIF/BMP/ICO)、智能裁剪、无损缩放、分辨率调整。完全在浏览器中运行，保障隐私安全。</p>
                 <a href="image-converter.html" class="tool-link">
                     开始使用 <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h2>2</h2>
+                <p>2</p>
+                <a href="2" class="tool-link">
+                    开始使用 <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
         </div>
         
         <div class="footer">
