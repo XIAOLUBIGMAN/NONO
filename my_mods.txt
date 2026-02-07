@@ -12,7 +12,8 @@ WhatAreTheUpTo https://cdn.modrinth.com/data/AtB5mHky/versions/GpiXMxvP/watut-fo
 BarbequesDelight https://cdn.modrinth.com/data/c9qdJjaq/versions/CJCRxwWz/barbeques-delight-1.1.0.jar
 LetYourFriendEating https://cdn.modrinth.com/data/qkQbFn8p/versions/KMIK6AbL/LetYourFriendEating_1.1.3_1.20.1_Forge.jar
 拥抱锻造版 https://github.com/StarCarefree/HugMe-Forge-Edition/releases/download/v1.0.0/hugme-1.0.0.jar
-chaintogether https://cn.bing.com/search?q=chaintogether&cvid=dfd6570459a74dadafa8813985e13b72&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIHCAEQ6wcYQNIBBzYyMGowajSoAgCwAgE&FORM=ANAB01&ucpdpc=UCPD&PC=U531
+chaintogether https://cdn.modrinth.com/data/BIbOqUv4/versions/WYDxvajZ/%5B%E9%93%BE%E5%9C%A8%E4%B8%80%E8%B5%B7%5D%20chaintogether-1.0.0.jar
 YDMsWeaponMaster https://cdn.modrinth.com/data/qi1sj2da/versions/D7JWWIQX/weaponmaster_ydm-forge-1.20.1-4.2.3.jar
+
 
 
