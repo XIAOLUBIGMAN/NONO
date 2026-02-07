@@ -1,0 +1,4 @@
+# Minecraft模组列表
+# 生成时间: 2026-02-07 21:15:14
+
+AppleSkin https://cdn.modrinth.com/data/EsAfCjCV/versions/XdXDExVF/appleskin-forge-mc1.20.1-2.5.1.jar
