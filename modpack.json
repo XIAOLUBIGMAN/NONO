@@ -1,0 +1,20 @@
+{
+  "mods": [
+    {
+      "name": "Create",
+      "file": "create-1.20.1.jar",
+      "sha256": "xxx",
+      "download_url": "https://example.com/create.jar",
+      "required": true,
+      "remark": "核心模组"
+    },
+    {
+      "name": "JourneyMap",
+      "file": "journeymap-1.20.1.jar",
+      "sha256": "yyy",
+      "download_url": "https://example.com/journeymap.jar",
+      "required": false,
+      "remark": "小地图（客户端可选）"
+    }
+  ]
+}
