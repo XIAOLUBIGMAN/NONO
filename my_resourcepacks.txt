@@ -1,0 +1,6 @@
+# 我的列表
+# 生成时间: 2026-02-13 03:56:06
+# 格式: [Resourcepack] 资源包名称 下载链接 *备注*
+##################################################
+
+Borderless Glass【无缝玻璃】 https://cdn.modrinth.com/data/1Ja8Sg6j/versions/8MUPdp61/Borderless%2B%C2%A77Glassv1.0.zip
