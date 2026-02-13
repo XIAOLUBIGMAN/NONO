@@ -10,7 +10,7 @@
       "name": "Continuity",
       "file": "新模组.jar",
       "download_url": "https://cdn.modrinth.com/data/1IjD5062/versions/9KbAcWSO/continuity-3.0.0%2B1.20.1.forge.jar",
-      "required": false,
+      "required": true,
       "remark": ""
     }
   ]
