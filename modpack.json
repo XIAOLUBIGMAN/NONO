@@ -1,20 +1,87 @@
 {
+  "pack_name": "MyModPack",
+  "minecraft": "1.20.1",
+  "loader": "forge",
+  "version": "1.0.0",
+  "changelog": "由 xiaolu 整合包编辑器上传",
+  "sync_policy": "recommended_add_only",
   "mods": [
     {
-      "name": "Create",
-      "file": "create-1.20.1.jar",
-      "sha256": "xxx",
-      "download_url": "https://example.com/create.jar",
+      "name": "Accessories",
+      "file": "Accessories.jar",
+      "download_url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/ALKwAjwA/accessories-neoforge-1.0.0-beta.48%2B1.20.1.jar",
       "required": true,
-      "remark": "核心模组"
+      "remark": ""
     },
     {
-      "name": "JourneyMap",
-      "file": "journeymap-1.20.1.jar",
-      "sha256": "yyy",
-      "download_url": "https://example.com/journeymap.jar",
-      "required": false,
-      "remark": "小地图（客户端可选）"
+      "name": "Chain Together",
+      "file": "chaintogether.jar",
+      "download_url": "https://cdn.modrinth.com/data/BIbOqUv4/versions/WYDxvajZ/%5B%E9%93%BE%E5%9C%A8%E4%B8%80%E8%B5%B7%5D%20chaintogether-1.0.0.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "CoroUtil",
+      "file": "CoroUtil.jar",
+      "download_url": "https://cdn.modrinth.com/data/rLLJ1OZM/versions/6rPDKAT8/coroutil-forge-1.20.1-1.3.7.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "Let Your Friend Eating!",
+      "file": "LetYourFriendEating.jar",
+      "download_url": "https://cdn.modrinth.com/data/qkQbFn8p/versions/KMIK6AbL/LetYourFriendEating_1.1.3_1.20.1_Forge.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "LittleTiles",
+      "file": "LittleTiles.jar",
+      "download_url": "https://cdn.modrinth.com/data/RCRxC1tD/versions/sBbUjEhq/LittleTiles_BETA_v1.6.0-pre161_mc1.20.1.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "What Are They Up To",
+      "file": "WhatAreTheUpTo.jar",
+      "download_url": "https://cdn.modrinth.com/data/AtB5mHky/versions/GpiXMxvP/watut-forge-1.20.1-1.2.3.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "SimpleHats",
+      "file": "帽子.jar",
+      "download_url": "https://cdn.modrinth.com/data/iSkQCp6b/versions/jgJvtZiI/simplehats-forge-1.20.1-0.4.0.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "HugMe Forge Edition",
+      "file": "拥抱锻造版.jar",
+      "download_url": "https://cdn.modrinth.com/data/co85uCMy/versions/4oB0l30h/FORGED%20ASCENT%20%E2%80%93%20Focused%20Survival%201.0.0.mrpack",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "机械动力_中央厨房",
+      "file": "机械动力_中央厨房.jar",
+      "download_url": "https://cdn.modrinth.com/data/btq68HMO/versions/b6J7xYnJ/create_central_kitchen-1.20.1-for-create-6.0.6-1.4.3b.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "Corn Delight",
+      "file": "玉米乐事.jar",
+      "download_url": "https://cdn.modrinth.com/data/uxLAKWU8/versions/OtOyVrQB/corn_delight-1.1.9-1.20.1.jar",
+      "required": true,
+      "remark": ""
+    },
+    {
+      "name": "Brewin' And Chewin'",
+      "file": "饮酒作乐.jar",
+      "download_url": "https://cdn.modrinth.com/data/hIu9KJTT/versions/9myDFPCD/BrewinAndChewin-1.20.1-3.2.1.jar",
+      "required": true,
+      "remark": ""
     }
   ]
 }
